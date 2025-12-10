@@ -36,23 +36,29 @@ as the initial public state.
 
 - Move this section under an `Unreleased` header only if you plan additional changes before releasing.
 
-## Unreleased
+## [0.1.3] - 2025-12-10
 
-- **Commit:** `e6de0ba6` — `query strings and paths`
+- **Commits:**
+  - `e6de0ba6` — `query strings and paths`
+  - `a47e7ed4` — `DELETE & testing endpoint`
 - **Date:** 2025-12-10
 - **Files changed:** `books.py`, `pyproject.toml`
 
 ### Summary
 
 - Added query-string and path-based endpoints to filter books by `category` and by `author` + `category`.
-- Added an extra book entry (`Title Six`) to the in-memory `BOOKS` list.
+- Added `POST`, `PUT`, and `DELETE` endpoints for managing the in-memory `BOOKS` collection; added `Title Six` to the dataset.
 
 ### Details
 
-- `GET /books/` now accepts a query parameter `category` and returns books matching the category (case-insensitive).
+- `GET /books/` accepts a query parameter `category` and returns books matching the category (case-insensitive).
 - `GET /books/{book_author}/` accepts path parameter `book_author` and query parameter `category`; returns books matching both author and category (case-insensitive).
-- `pyproject.toml` was modified (likely a version bump or metadata change).
+- `POST /books/create_book` accepts a request body and appends a new book to `BOOKS`.
+- `PUT /books/update_book` accepts a request body and replaces an existing book (matched by `title`) with the provided data.
+- `DELETE /books/delete_book/{book_title}` deletes a book matched by `title` from `BOOKS`.
+- `GET /books/by_author/{author}` returns books for a given author.
+- `pyproject.toml` was modified (metadata/version changes).
 
 ### Notes
 
-- Consider adding response models and input validation for query parameters; also consider returning `404` when no results are found for single-book queries.
+- Consider adding response models and input validation for request bodies and query parameters; consider returning appropriate HTTP status codes (e.g., `201` on create, `404` when updates/deletes target non-existent resources).
