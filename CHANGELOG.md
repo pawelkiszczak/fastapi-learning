@@ -17,3 +17,21 @@ as the initial public state.
 
 - Treat `0.1.1` as the initial release for this repository; subsequent changes should be
   recorded as additional versioned sections here.
+
+## [0.1.2] - 2025-12-10
+
+- Commit: `ffb7ab21` — `update endpoint with dynamic parameter`
+- Files changed: `books.py`
+
+### Summary
+
+- Added `GET /books/{book_title}` to fetch a single book by title (case-insensitive match).
+
+### Details
+
+- The endpoint returns the matching book object when found, otherwise returns `{"message": "Book not found"}`.
+- Renamed the handler to `read_book_by_title` to avoid a duplicate function name with `read_all_books`.
+
+### Notes
+
+- Move this section under an `Unreleased` header only if you plan additional changes before releasing.
