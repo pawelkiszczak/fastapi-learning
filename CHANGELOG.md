@@ -35,3 +35,24 @@ as the initial public state.
 ### Notes
 
 - Move this section under an `Unreleased` header only if you plan additional changes before releasing.
+
+## Unreleased
+
+- **Commit:** `e6de0ba6` — `query strings and paths`
+- **Date:** 2025-12-10
+- **Files changed:** `books.py`, `pyproject.toml`
+
+### Summary
+
+- Added query-string and path-based endpoints to filter books by `category` and by `author` + `category`.
+- Added an extra book entry (`Title Six`) to the in-memory `BOOKS` list.
+
+### Details
+
+- `GET /books/` now accepts a query parameter `category` and returns books matching the category (case-insensitive).
+- `GET /books/{book_author}/` accepts path parameter `book_author` and query parameter `category`; returns books matching both author and category (case-insensitive).
+- `pyproject.toml` was modified (likely a version bump or metadata change).
+
+### Notes
+
+- Consider adding response models and input validation for query parameters; also consider returning `404` when no results are found for single-book queries.
