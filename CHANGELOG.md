@@ -62,3 +62,22 @@ as the initial public state.
 ### Notes
 
 - Consider adding response models and input validation for request bodies and query parameters; consider returning appropriate HTTP status codes (e.g., `201` on create, `404` when updates/deletes target non-existent resources).
+
+## [0.1.4] - 2025-12-10
+
+- **Commit:** `ed020b2c` — `add more PUT & DELETE`
+- **Date:** 2025-12-10
+- **Files changed:** `project-2/books.py`
+
+### Summary
+
+- Continued improvements to CRUD endpoints: added more `PUT`/`DELETE` functionality and tests in the `project-2` example.
+
+### Details
+
+- Enhanced PUT/DELETE handling in `project-2/books.py` (see commit `ed020b2c`).
+- Small refactors and test scaffolding for the `project-2` example.
+
+### Notes
+
+- Consider adding validation and proper HTTP status responses for create/update/delete operations (e.g., `201` on create, `204` on successful delete, `404` when not found).
