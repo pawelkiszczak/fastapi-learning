@@ -81,3 +81,29 @@ as the initial public state.
 ### Notes
 
 - Consider adding validation and proper HTTP status responses for create/update/delete operations (e.g., `201` on create, `204` on successful delete, `404` when not found).
+
+## Unreleased
+
+- **Commits (most recent first):**
+  - `2e1096e` — `update makefile & rename dirs`
+  - `b28ad70` — `rename dirs and update makefile`
+  - `c26c186` — `add http exceptions`
+  - `56eed13` — `add Makefile`
+  - `179a438` — `add query & path validation`
+
+### Summary
+
+- Project structure renamed (directories) and Makefile improved to support `uv run` usage and configurable `APP_NAME`.
+- Added HTTP exception handling to endpoints to return proper status codes for error cases.
+- Validation added for query/path parameters in some endpoints.
+
+### Details
+
+- `update makefile & rename dirs` / `rename dirs and update makefile` — Makefile targets and examples updated; callers can run apps with `make run APP_NAME=module:app` and lint/format with `make lint FILES=...`.
+- `add http exceptions` — endpoints updated to raise HTTP exceptions on invalid input or not-found cases (see `project_*/books.py`).
+- `add Makefile` — initial Makefile added (subsequently refined).
+- `add query & path validation` — added basic validation for query and path parameters in book endpoints.
+
+### Notes
+
+- These changes are kept as `Unreleased` (not a release). When ready, promote this section to a versioned release (e.g., `[0.1.5] - YYYY-MM-DD`) and tag accordingly.

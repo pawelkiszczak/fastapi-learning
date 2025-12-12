@@ -36,7 +36,7 @@ sort:
 format:
 	uv run ruff format $(FILES)
 
-check: format lint
+check: sort format lint
 
 # Run Uvicorn FastAPI server
 run:
