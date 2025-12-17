@@ -1,15 +1,26 @@
+import os
+from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Generator
 
 from database import SessionLocal
+from dotenv import load_dotenv
 from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
 from models import User
 from passlib.context import CryptContext
-from request_schemas import CreateUserRequest
+from request_schemas import CreateUserRequest, Token
 from sqlalchemy.orm import Session
 from starlette import status
 
+load_dotenv(override=True)
+
 # Declare router
 router = APIRouter()
+
+# JWT hashing setup
+SECRET_KEY = os.getenv("SECRET_KEY", None)
+ALGORITHM = os.getenv("ALGORITHM", None)
 
 # Declare hashing algo and context
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -26,6 +37,22 @@ def get_db() -> Generator[Session, Any, None]:
 
 # Database settings
 DB_DEPENDENCY = Annotated[Session, Depends(get_db)]
+
+
+def authenticate_user(username: str, password: str, db):
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        return None
+    if not bcrypt_context.verify(password, user.hashed_password):
+        return False
+    return user
+
+
+def create_access_token(username: str, user_id: str, expires_delta: timedelta):
+    encode = {"sub": username, "id": user_id}
+    expires = datetime.now(timezone.utc) + expires_delta
+    encode.update({"exp": expires})
+    return jwt.encode(encode, SECRET_KEY, ALGORITHM)
 
 
 @router.post("/auth", status_code=status.HTTP_201_CREATED)
@@ -45,3 +72,15 @@ async def create_user(
 
     db.add(create_user_model)
     db.commit()
+
+
+@router.post("/token", response_model=Token)
+async def login_for_access_token(
+    form_data: Annotated[OAuth2PasswordRequestForm, Depends()], db: DB_DEPENDENCY
+):
+    user = authenticate_user(form_data.username, form_data.password, db)
+    if not user:
+        return "Failed authentication"
+
+    token = create_access_token(user.username, user.id, timedelta(minutes=20))
+    return {"access_token": token, "token_type": "bearer"}
