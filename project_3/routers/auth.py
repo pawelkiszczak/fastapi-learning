@@ -4,9 +4,9 @@ from typing import Annotated, Any, Generator
 
 from database import SessionLocal
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordRequestForm
-from jose import jwt
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from jose import JWTError, jwt
 from models import User
 from passlib.context import CryptContext
 from request_schemas import CreateUserRequest, Token
@@ -24,6 +24,7 @@ ALGORITHM = os.getenv("ALGORITHM", None)
 
 # Declare hashing algo and context
 bcrypt_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+oauth2_bearer = OAuth2PasswordBearer(tokenUrl="token")
 
 
 # Get database connection
@@ -53,6 +54,24 @@ def create_access_token(username: str, user_id: str, expires_delta: timedelta):
     expires = datetime.now(timezone.utc) + expires_delta
     encode.update({"exp": expires})
     return jwt.encode(encode, SECRET_KEY, ALGORITHM)
+
+
+async def get_current_user(token: Annotated[str, Depends(oauth2_bearer)]):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, ALGORITHM)
+        username: str = payload.get("sub")
+        user_id: int = payload.get("id")
+        if username is None or user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Could not validate user",
+            )
+        return {"username": username, "id": user_id}
+
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED, detail="Could not validate user"
+        )
 
 
 @router.post("/auth", status_code=status.HTTP_201_CREATED)
