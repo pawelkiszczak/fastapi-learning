@@ -5,6 +5,7 @@ description = "Learning FastAPI example: simple API exposing book endpoints with
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "alembic>=1.17.2",
     "bcrypt==4.0.1",
     "fastapi>=0.124.0",
     "loguru>=0.7.3",
