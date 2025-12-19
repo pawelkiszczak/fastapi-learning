@@ -1,15 +1,10 @@
+import os
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
-
-from alembic import context
-
 import models
-
-import os
-
+from alembic import context
 from dotenv import load_dotenv
+from sqlalchemy import engine_from_config, pool
 
 load_dotenv(override=True)
 
@@ -34,10 +29,9 @@ target_metadata = models.Base.metadata
 SQLITE_DB_NAME = os.getenv("SQLITE_DB_NAME")
 if not SQLITE_DB_NAME:
     raise RuntimeError("SQLITE_DB_NAME is not set")
-config.get_main_option(
-    "sqlalchemy.url",
-    f"sqlite:///./{SQLITE_DB_NAME}"
-)
+config.set_main_option("sqlalchemy.url", f"sqlite:///./{SQLITE_DB_NAME}")
+
+print("ALEMBIC DB URL:", config.get_main_option("sqlalchemy.url"))
 
 
 def run_migrations_offline() -> None:
@@ -78,9 +72,7 @@ def run_migrations_online() -> None:
     )
 
     with connectable.connect() as connection:
-        context.configure(
-            connection=connection, target_metadata=target_metadata
-        )
+        context.configure(connection=connection, target_metadata=target_metadata)
 
         with context.begin_transaction():
             context.run_migrations()
