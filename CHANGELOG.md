@@ -84,26 +84,46 @@ as the initial public state.
 
 ## Unreleased
 
+## [0.1.5] - 2025-12-19
+
 - **Commits (most recent first):**
-  - `2e1096e` — `update makefile & rename dirs`
-  - `b28ad70` — `rename dirs and update makefile`
-  - `c26c186` — `add http exceptions`
-  - `56eed13` — `add Makefile`
-  - `179a438` — `add query & path validation`
+  - `e1127e9` — `include phone_number in user creation & change number endpoint`
+  - `aba36bf` — `add downgrade to alembic`
+  - `d232562` — `fix alembic`
+  - `7465781` — `add basic alembic`
+  - `cfc1430` — `add user password change`
+  - `143c29e` — `add admin route`
+  - `963e043` — `update user dependency in all endpoints`
+  - `f63a78e` — `add todo as verified user`
+  - `b4b4f04` — `add prefixes, tags and cleanup auth.py`
+  - `972056b` — `jwt decoding`
+  - `f4a47b7` — `use JWT token`
+  - `f7c42b2` — `user creation`
+  - `fb7440a` — `add user creation`
+  - `0e3dfd8` — `small rebuild and cleanup & routers added`
+  - `afa3f65` — `add request validation schema and delete endpoint`
+  - `a2422f7` — `add new CRUD endpoints for todos`
+  - `870ead6` — `dependency injection`
 
 ### Summary
 
-- Project structure renamed (directories) and Makefile improved to support `uv run` usage and configurable `APP_NAME`.
-- Added HTTP exception handling to endpoints to return proper status codes for error cases.
-- Validation added for query/path parameters in some endpoints.
+- Added user management features (user creation, password changes, phone number support, admin route).
+- Introduced JWT-based authentication and updated dependency usage across endpoints.
+- Added Alembic migrations and downgrade support for database schema management.
+- Added or improved todos CRUD, request validation schemas, and router organization.
 
 ### Details
 
-- `update makefile & rename dirs` / `rename dirs and update makefile` — Makefile targets and examples updated; callers can run apps with `make run APP_NAME=module:app` and lint/format with `make lint FILES=...`.
-- `add http exceptions` — endpoints updated to raise HTTP exceptions on invalid input or not-found cases (see `project_*/books.py`).
-- `add Makefile` — initial Makefile added (subsequently refined).
-- `add query & path validation` — added basic validation for query and path parameters in book endpoints.
+- `include phone_number in user creation & change number endpoint` — user schema extended to include `phone_number` and endpoints updated to accept/change it.
+- `add basic alembic` / `fix alembic` / `add downgrade to alembic` — Alembic scaffolding and migrations added; downgrade support implemented.
+- Authentication: JWT encoding/decoding added; `auth.py` cleaned up; endpoints now use JWT token dependency and improved guards for verified users.
+- Todos: new CRUD endpoints, request schema validation, and a verified-user requirement for some operations.
+- Router and project structure: small rebuild, added routers and updated dependency injection to streamline endpoints.
 
 ### Notes
 
-- These changes are kept as `Unreleased` (not a release). When ready, promote this section to a versioned release (e.g., `[0.1.5] - YYYY-MM-DD`) and tag accordingly.
+- These changes reflect development activity through 2025-12-19 and should be reviewed before tagging a formal release.
+
+## Unreleased
+
+- No unreleased changes at this time.
