@@ -42,4 +42,8 @@ check: sort format lint
 run:
 	uv run uvicorn $(MODULE_NAME):app --reload
 
+# Run PyTest
+test:
+	uv run pytest
+
 # End of Makefile

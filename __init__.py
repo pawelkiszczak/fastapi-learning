@@ -1,7 +1,7 @@
 try:
-    from . import project_3
+    from . import project_3, tests
 
-    __all__ = ["project_3"]
+    __all__ = ["project_3", "tests"]
 except Exception:
     # Avoid import-time errors when running tests or when the package
     # is not being imported as a proper parent package.
