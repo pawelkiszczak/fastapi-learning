@@ -8,7 +8,8 @@ from sqlalchemy.pool import StaticPool
 
 from project_3.database import Base
 from project_3.main import app
-from project_3.models import Todo
+from project_3.models import Todo, User
+from project_3.routers.auth import bcrypt_context
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db"
 
@@ -33,7 +34,7 @@ def override_get_db() -> Generator[Session, Any, None]:
 
 
 def override_get_current_user():
-    return {"username": "pawkistest", "id": 1, "role": "admin"}
+    return {"username": "pawkistest", "id": 1, "user_role": "admin"}
 
 
 client = TestClient(app)
@@ -55,4 +56,25 @@ def test_todo():
     yield todo
     with engine.connect() as connection:
         connection.execute(text("DELETE FROM todos;"))
+        connection.commit()
+
+
+@pytest.fixture
+def test_user():
+    user = User(
+        username="januszeiro",
+        email="januszeiro@test.pl",
+        first_name="janusz",
+        last_name="eiro",
+        hashed_password=bcrypt_context.hash("testpassword"),
+        role="admin",
+        phone_number="1233212310",
+    )
+
+    db = TestingSessionLocal()
+    db.add(user)
+    db.commit()
+    yield user
+    with engine.connect() as connection:
+        connection.execute(text("DELETE FROM users;"))
         connection.commit()
