@@ -2,16 +2,17 @@ import os
 from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Generator
 
-from database import SessionLocal
 from dotenv import load_dotenv
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from jose import JWTError, jwt
-from models import User
 from passlib.context import CryptContext
-from request_schemas import CreateUserRequest, Token
 from sqlalchemy.orm import Session
 from starlette import status
+
+from ..database import SessionLocal
+from ..models import User
+from ..request_schemas import CreateUserRequest, Token
 
 load_dotenv(override=True)
 

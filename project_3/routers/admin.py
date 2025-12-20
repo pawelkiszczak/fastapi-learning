@@ -1,11 +1,11 @@
 from typing import Annotated, Any, Generator
 
-from database import SessionLocal
 from fastapi import APIRouter, Depends, HTTPException, Path
-from models import Todo
 from sqlalchemy.orm import Session
 from starlette import status
 
+from ..database import SessionLocal
+from ..models import Todo
 from .auth import get_current_user
 
 router = APIRouter(prefix="/admin", tags=["admin"])
