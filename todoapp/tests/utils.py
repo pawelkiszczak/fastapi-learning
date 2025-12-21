@@ -6,10 +6,10 @@ from sqlalchemy import create_engine, text
 from sqlalchemy.orm import Session, sessionmaker
 from sqlalchemy.pool import StaticPool
 
-from project_3.database import Base
-from project_3.main import app
-from project_3.models import Todo, User
-from project_3.routers.auth import bcrypt_context
+from todoapp.database import Base
+from todoapp.main import app
+from todoapp.models import Todo, User
+from todoapp.routers.auth import bcrypt_context
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./testdb.db"
 

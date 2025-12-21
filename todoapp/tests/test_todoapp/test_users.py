@@ -1,7 +1,7 @@
 from fastapi import status
 
-from project_3.routers.user import get_current_user, get_db
-from tests.utils import *
+from todoapp.routers.user import get_current_user, get_db
+from todoapp.tests.utils import *
 
 app.dependency_overrides[get_db] = override_get_db
 app.dependency_overrides[get_current_user] = override_get_current_user

@@ -1,10 +1,10 @@
 from datetime import timedelta
 
 import pytest
-from jose import jwt
 from fastapi import HTTPException, status
+from jose import jwt
 
-from project_3.routers.auth import (
+from todoapp.routers.auth import (
     ALGORITHM,
     SECRET_KEY,
     authenticate_user,
@@ -12,7 +12,7 @@ from project_3.routers.auth import (
     get_current_user,
     get_db,
 )
-from tests.utils import *
+from todoapp.tests.utils import *
 
 app.dependency_overrides[get_db] = override_get_db
 
@@ -55,13 +55,14 @@ async def test_get_current_user_valid_token():
     user = await get_current_user(token)
     assert user == {"username": "testuser", "id": 1, "user_role": "admin"}
 
+
 @pytest.mark.asyncio
 async def test_get_current_user_missing_payload():
     encode = {"user_role": "user"}
     token = jwt.encode(encode, SECRET_KEY, algorithm=ALGORITHM)
-    
+
     with pytest.raises(HTTPException) as excinfo:
         await get_current_user(token)
-        
+
     assert excinfo.value.status_code == status.HTTP_401_UNAUTHORIZED
     assert excinfo.value.detail == "Could not validate user"

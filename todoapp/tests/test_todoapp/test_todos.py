@@ -1,14 +1,13 @@
 from fastapi import status
 
-from project_3.models import Todo
-from project_3.routers.todos import get_current_user, get_db
-from tests.utils import (
+from todoapp.models import Todo
+from todoapp.routers.todos import get_current_user, get_db
+from todoapp.tests.utils import (
     TestingSessionLocal,
     app,
     client,
     override_get_current_user,
     override_get_db,
-    test_todo,
 )
 
 # Override dependencies when testing
