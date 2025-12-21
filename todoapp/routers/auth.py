@@ -3,8 +3,9 @@ from datetime import datetime, timedelta, timezone
 from typing import Annotated, Any, Generator
 
 from dotenv import load_dotenv
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.templating import Jinja2Templates
 from jose import JWTError, jwt
 from passlib.context import CryptContext
 from sqlalchemy.orm import Session
@@ -40,7 +41,15 @@ def get_db() -> Generator[Session, Any, None]:
 # Database settings
 DB_DEPENDENCY = Annotated[Session, Depends(get_db)]
 
+templates = Jinja2Templates(directory="todoapp/templates")
 
+### Pages ###
+@router.get("/login-page")
+def render_login_page(request: Request):
+    return templates.TemplateResponse("login.html", {"request": request})
+
+
+### Endpoints ###
 def authenticate_user(username: str, password: str, db):
     user = db.query(User).filter(User.username == username).first()
     if not user:
