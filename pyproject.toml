@@ -5,10 +5,12 @@ description = "Learning FastAPI example: simple API exposing book endpoints with
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "aiofiles>=25.1.0",
     "alembic>=1.17.2",
     "bcrypt==4.0.1",
     "fastapi>=0.124.0",
     "httpx>=0.28.1",
+    "jinja2>=3.1.6",
     "loguru>=0.7.3",
     "passlib>=1.7.4",
     "pytest>=9.0.2",

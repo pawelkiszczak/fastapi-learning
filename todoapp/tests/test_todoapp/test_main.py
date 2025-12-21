@@ -1,4 +1,3 @@
-
 # Ensure repo root is on sys.path so `project_3` package is importable under pytest
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..")))
 from fastapi import status
