@@ -9,7 +9,10 @@ from ..models import Todo
 from ..request_schemas import TodoRequest
 from .auth import get_current_user
 
-router = APIRouter(tags=["todo"])
+router = APIRouter(
+    prefix="/todos",
+    tags=["todos"]
+    )
 
 
 # Get database connection
