@@ -2,5 +2,6 @@
   "makefile.configureOnOpen": false,
   "python.testing.pytestArgs": ["todoapp"],
   "python.testing.unittestEnabled": false,
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+  "cSpell.words": ["eiro", "janusz", "januszeiro", "pawkistest"]
 }

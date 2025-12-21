@@ -58,13 +58,26 @@ async def render_todo_page(request: Request, db: DB_DEPENDENCY):
         return redirect_to_login()
     
 @router.get("/add-todo-page")
-async def render_todo_page(request: Request):
+async def render_add_todo_page(request: Request):
     try:
         user = await get_current_user(request.cookies.get("access_token"))
         if user is None:
             return redirect_to_login()
         
         return templates.TemplateResponse("add-todo.html", {"request": request, "user": user})
+    
+    except:
+        return redirect_to_login()
+    
+@router.get("/edit-todo-page/{todo_id}")
+async def render_edit_todo_page(request: Request, db: DB_DEPENDENCY, todo_id: int):
+    try:
+        user = await get_current_user(request.cookies.get("access_token"))
+        if user is None:
+            return redirect_to_login()
+        
+        todo = db.query(Todo).filter(Todo.id==todo_id).first()        
+        return templates.TemplateResponse('edit-todo.html', {"request": request, "user": user, "todo": todo})
     
     except:
         return redirect_to_login()

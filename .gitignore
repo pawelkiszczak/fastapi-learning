@@ -208,3 +208,5 @@ __marimo__/
 
 # Custom
 *.db
+.vscode/settings.json
+settings.json
