@@ -11,9 +11,9 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from starlette import status
 
-from ..database import SessionLocal
-from ..models import User
-from ..request_schemas import CreateUserRequest, Token
+from todoapp.database import SessionLocal
+from todoapp.models import User
+from todoapp.request_schemas import CreateUserRequest, Token
 
 load_dotenv(override=True)
 
@@ -43,10 +43,16 @@ DB_DEPENDENCY = Annotated[Session, Depends(get_db)]
 
 templates = Jinja2Templates(directory="todoapp/templates")
 
+
 ### Pages ###
 @router.get("/login-page")
 def render_login_page(request: Request):
     return templates.TemplateResponse("login.html", {"request": request})
+
+
+@router.get("/register-page")
+def render_register_page(request: Request):
+    return templates.TemplateResponse("register.html", {"request": request})
 
 
 ### Endpoints ###

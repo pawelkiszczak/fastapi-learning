@@ -5,9 +5,10 @@ from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 from starlette import status
 
-from ..database import SessionLocal
-from ..models import User
-from ..request_schemas import UserVerification
+from todoapp.database import SessionLocal
+from todoapp.models import User
+from todoapp.request_schemas import UserVerification
+
 from .auth import get_current_user
 
 router = APIRouter(prefix="/user", tags=["user"])

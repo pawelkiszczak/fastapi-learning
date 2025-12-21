@@ -1,12 +1,15 @@
 from typing import Annotated, Any, Generator
 
-from fastapi import APIRouter, Depends, HTTPException, Path
+from fastapi import APIRouter, Depends, HTTPException, Path, Request
+from fastapi.responses import RedirectResponse
+from fastapi.templating import Jinja2Templates
 from sqlalchemy.orm import Session
 from starlette import status
 
-from ..database import SessionLocal
-from ..models import Todo
-from ..request_schemas import TodoRequest
+from todoapp.database import SessionLocal
+from todoapp.models import Todo
+from todoapp.request_schemas import TodoRequest
+
 from .auth import get_current_user
 
 router = APIRouter(prefix="/todos", tags=["todos"])
@@ -21,12 +24,41 @@ def get_db() -> Generator[Session, Any, None]:
         db.close()
 
 
+# Redirect method
+def redirect_to_login():
+    redirect_response = RedirectResponse(
+        url="/auth/login-page", status_code=status.HTTP_302_FOUND
+    )
+    redirect_response.delete_cookie(key="access_token")
+    return redirect_response
+
+
 # Dependency injections
 DB_DEPENDENCY = Annotated[Session, Depends(get_db)]
 USER_DEPENDENCY = Annotated[dict, Depends(get_current_user)]
 
+# Set the templates
+templates = Jinja2Templates(directory="todoapp/templates")
 
-# Endpoints
+
+### Pages ###
+@router.get("/todo-page")
+async def render_todo_page(request: Request, db: DB_DEPENDENCY):
+    try:
+        user = await get_current_user(request.cookies.get("access_token"))
+        if user is None:
+            return redirect_to_login()
+
+        todos = db.query(Todo).filter(Todo.owner_id == user.get("id")).all()
+        return templates.TemplateResponse(
+            "todo.html", {"request": request, "todos": todos, "user": user}
+        )
+
+    except:
+        return redirect_to_login()
+
+
+### Endpoints ####
 @router.get("/", status_code=status.HTTP_200_OK)
 async def read_all(user: USER_DEPENDENCY, db: DB_DEPENDENCY):
     if user is None:
